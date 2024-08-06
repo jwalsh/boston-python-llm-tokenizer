@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "boston_python_llm_tokenizer"
+version = "0.1.0"
+description = "A tokenizer for the Boston Python LLM project"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]

@@ -1,26 +1,31 @@
-# Variables
-PYTHON = python3
-PIP = pip3
-VENV = .venv
-BIN = $(VENV)/bin
-ACTIVATE = . $(BIN)/activate
-EMACS = emacs
-EMACSFLAGS = -Q -l $(PWD)/emacs-config/init.el
-EMACSBATCH = $(EMACS) -Q --batch
+# Boston Python LLM Tokenizer Makefile
 
-# Directories
-DRILLS_DIR = drills
-SRC_DIR = src
-TESTS_DIR = tests
-IMAGES_DIR = images
-THUMBS_DIR = $(IMAGES_DIR)/thumbnails
-EMACS_DIR = emacs-config
+# ====== Variables ======
+PYTHON := python3
+PIP := pip3
+VENV := .venv
+BIN := $(VENV)/bin
+ACTIVATE := . $(BIN)/activate
+EMACS := emacs
+EMACSFLAGS := -Q -l $(PWD)/emacs-config/init.el
+EMACSBATCH := $(EMACS) -Q --batch
 
-# Make help the default goal
+# ====== Directories ======
+DRILLS_DIR := drills
+SRC_DIR := src
+TESTS_DIR := tests
+IMAGES_DIR := images
+THUMBS_DIR := $(IMAGES_DIR)/thumbnails
+EMACS_DIR := emacs-config
+
+# ====== Marker Files ======
+VENV_MARKER := $(VENV)/.venv_created
+SETUP_MARKER := .setup_complete
+
+# ====== Main Targets ======
 .DEFAULT_GOAL := help
 
-# Targets
-.PHONY: help setup venv emacs-setup drill emacs test format typecheck freeze thumbnails clean
+.PHONY: help setup venv emacs-setup drill emacs test format typecheck freeze thumbnails clean install-deps update-emacs-packages
 
 help: ## Display this help message
 	@echo "Usage: make [target]"
@@ -28,26 +33,26 @@ help: ## Display this help message
 	@echo "Available targets:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-setup: venv emacs-setup ## Set up the entire project environment (start here)
+setup: $(SETUP_MARKER) ## Set up the entire project environment (start here)
+
+$(SETUP_MARKER): $(VENV_MARKER)
 	@echo "Setting up Boston Python LLM Tokenizer environment..."
-	@mkdir -p $(DRILLS_DIR)
-	@mkdir -p $(SRC_DIR)
-	@mkdir -p $(IMAGES_DIR)
-	@mkdir -p $(THUMBS_DIR)
+	@mkdir -p $(DRILLS_DIR) $(SRC_DIR) $(IMAGES_DIR) $(THUMBS_DIR)
+	@touch $(SRC_DIR)/boston_python_llm_tokenizer/__init__.py
+	@$(ACTIVATE) && pip install -e .
+	@touch $@
 	@echo "Setup complete!"
 	@echo "To activate the virtual environment, run: source $(VENV)/bin/activate"
 
-venv: ## (optional) Create and set up virtual environment
+$(VENV_MARKER):
 	@echo "Creating virtual environment..."
 	@$(PYTHON) -m venv $(VENV)
 	@$(ACTIVATE) && $(PIP) install --upgrade pip
 	@$(ACTIVATE) && $(PIP) install -r requirements.txt
+	@touch $@
 	@echo "Virtual environment created and packages installed."
 
-EMACS_RETRY = 3
-EMACS_RETRY_DELAY = 5
-
-emacs-setup: ## Set up Emacs configuration
+emacs-setup: $(SETUP_MARKER) ## Set up Emacs configuration
 	@echo "Setting up Emacs configuration..."
 	@mkdir -p $(EMACS_DIR)
 	@if [ ! -f $(EMACS_DIR)/init.el ] || ! cmp -s emacs-config/init.el $(EMACS_DIR)/init.el; then \
@@ -56,59 +61,38 @@ emacs-setup: ## Set up Emacs configuration
 	else \
 		echo "init.el is already up to date in $(EMACS_DIR)"; \
 	fi
-	@echo "Refreshing package contents and installing packages..."
-	@for i in $$(seq 1 $(EMACS_RETRY)); do \
-		if $(EMACSBATCH) -l $(EMACS_DIR)/init.el \
-			--eval "(progn \
-				(setq debug-on-error t) \
-				(package-refresh-contents) \
-				(package-install-selected-packages))" \
-			2>&1 | tee emacs_setup.log; then \
-			echo "Emacs package installation successful."; \
-			break; \
-		else \
-			echo "Attempt $$i failed. Retrying in $(EMACS_RETRY_DELAY) seconds..."; \
-			sleep $(EMACS_RETRY_DELAY); \
-		fi; \
-		if [ $$i -eq $(EMACS_RETRY) ]; then \
-			echo "Emacs package installation failed after $(EMACS_RETRY) attempts."; \
-			echo "Please check emacs_setup.log for details."; \
-			exit 1; \
-		fi; \
-	done
-	@echo "Emacs configuration complete!"
-
-update-emacs-packages: ## Update Emacs packages
-	@echo "Updating Emacs packages..."
+	@echo "Installing Emacs packages..."
 	@$(EMACSBATCH) -l $(EMACS_DIR)/init.el \
 		--eval "(progn \
 			(require 'package) \
 			(package-refresh-contents) \
 			(dolist (package package-selected-packages) \
-				(when (package-installed-p package) \
+				(unless (package-installed-p package) \
 					(package-install package))))" \
-		2>&1 | tee emacs_update.log
-	@echo "Emacs packages updated. Check emacs_update.log for details."
+		2>&1 | tee emacs_setup.log
+	@echo "Emacs configuration complete! Check emacs_setup.log for details."
 
-drill: venv emacs-setup ## Open the tokenization drill in Emacs
+# ====== Development Targets ======
+drill: $(SETUP_MARKER) ## Open the tokenization drill in Emacs
 	@$(ACTIVATE) && $(EMACS) $(EMACSFLAGS) --eval '(progn (find-file "$(DRILLS_DIR)/tokenization-drill.org") (org-drill))'
 
-emacs: venv emacs-setup ## (optional) Open Emacs with the custom configuration
+emacs: $(SETUP_MARKER) ## Open Emacs with the custom configuration
 	@$(ACTIVATE) && $(EMACS) $(EMACSFLAGS) $(PWD)
 
-test: venv ## Run tests for Python code
-	@$(ACTIVATE) && pytest $(TESTS_DIR)
+test: $(SETUP_MARKER) ## Run tests for Python code
+	@$(ACTIVATE) && PYTHONPATH=src pytest $(TESTS_DIR)
 
-format: venv ## Format Python code using Black
+format: $(SETUP_MARKER) ## Format Python code using Black
 	@$(ACTIVATE) && black $(SRC_DIR) $(TESTS_DIR)
 
-typecheck: venv ## Run type checking on Python code using mypy
+typecheck: $(SETUP_MARKER) ## Run type checking on Python code using mypy
 	@$(ACTIVATE) && mypy $(SRC_DIR)
 
-freeze: venv ## Freeze dependencies in requirements.txt
+freeze: $(SETUP_MARKER) ## Freeze dependencies in requirements.txt
 	@$(ACTIVATE) && $(PIP) freeze > requirements.txt
 
-thumbnails: ## Create thumbnails for JPEG images in the images directory
+# ====== Utility Targets ======
+thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images directory
 	@echo "Creating thumbnails..."
 	@mkdir -p $(THUMBS_DIR)
 	@for img in $(IMAGES_DIR)/*.{jpg,jpeg}; do \
@@ -122,8 +106,24 @@ thumbnails: ## Create thumbnails for JPEG images in the images directory
 
 clean: ## Clean up the environment
 	@echo "Cleaning up..."
-	@rm -rf $(VENV)
-	@rm -rf $(THUMBS_DIR)
+	@rm -rf $(VENV) $(THUMBS_DIR) $(SETUP_MARKER)
 	@find . -type f -name "*.pyc" -delete
 	@find . -type d -name "__pycache__" -delete
 	@echo "Cleanup complete!"
+
+install-deps: $(SETUP_MARKER) ## Install project dependencies
+	@echo "Installing project dependencies..."
+	@$(ACTIVATE) && $(PIP) install nltk transformers torch torchvision torchaudio
+	@echo "Dependencies installed. Please run 'make freeze' to update requirements.txt"
+
+update-emacs-packages: $(SETUP_MARKER) ## Update Emacs packages
+	@echo "Updating Emacs packages..."
+	@$(EMACSBATCH) -l $(EMACS_DIR)/init.el \
+		--eval "(progn \
+			(require 'package) \
+			(package-refresh-contents) \
+			(dolist (package package-selected-packages) \
+				(when (package-installed-p package) \
+					(package-install package))))" \
+		2>&1 | tee emacs_update.log
+	@echo "Emacs packages updated. Check emacs_update.log for details."
