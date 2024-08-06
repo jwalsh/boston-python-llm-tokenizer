@@ -1,0 +1,167 @@
+* Tokenization Drills
+
+** What is Tokenization?                                              :drill:
+:PROPERTIES:
+:ID:       8EFEA813-F9A5-4FA7-9C7E-4CF24793646B
+:END:
+
+Tokenization is the process of breaking down [ text ] into individual words or tokens.
+
+This is a fundamental step in natural language processing (NLP) and is used in a variety of applications, including
+
+- [ text]  analysis,
+- [ sentiment ] analysis, and
+- [ machine ]  translation. 
+
+** Tokenization Example 1: Simple Sentence                            :drill:
+:PROPERTIES:
+:ID:       2CABE481-2383-4E3E-A246-208458E3DABC
+:END:
+Tokenize the following sentence:
+"The quick brown fox jumps over the lazy dog."
+*** Answer ***
+#+BEGIN_SRC python
+import nltk
+nltk.download('punkt')
+sentence = "The quick brown fox jumps over the lazy dog."
+tokens = nltk.word_tokenize(sentence)
+print(tokens)
+#+END_SRC
+
+** Tokenization Example 2: Sentence with Punctuation                  :drill:
+:PROPERTIES:
+:ID:       BA0014B1-C096-4559-A789-B2DB971C8FE7
+:END:
+
+Tokenize the following sentence:
+
+"Hello, world! How are you today?"
+*** Answer ***
+#+BEGIN_SRC python
+import nltk
+nltk.download('punkt')
+sentence = "Hello, world! How are you today?"
+tokens = nltk.word_tokenize(sentence)
+print(tokens)
+#+END_SRC
+
+** Tokenization Example 3: Paragraph                                  :drill:
+:PROPERTIES:
+:ID:       BA64D2DE-516E-4D7D-826D-596970EA8190
+:END:
+Tokenize the following paragraph:
+"The quick brown fox jumps over the lazy dog. The sun is shining brightly in the clear blue sky."
+*** Answer ***
+#+BEGIN_SRC python
+import nltk
+nltk.download('punkt')
+paragraph = "The quick brown fox jumps over the lazy dog. The sun is shining brightly in the clear blue sky."
+tokens = nltk.word_tokenize(paragraph)
+print(tokens)
+#+END_SRC
+
+** Tokenization Example 4: ID Generation                              :drill:
+:PROPERTIES:
+:ID:       0C742424-ED26-42DC-B2EC-976852BB3EE0
+:END:
+Generate a unique ID for each token in the following sentence:
+"The quick brown fox jumps over the lazy dog."
+*** Answer ***
+#+BEGIN_SRC python
+import uuid
+sentence = "The quick brown fox jumps over the lazy dog."
+tokens = sentence.split()
+ids = [str(uuid.uuid4()) for token in tokens]
+print(ids)
+#+END_SRC
+
+** Tokenization Example 5: Using An Anthropic Model                   :drill:
+:PROPERTIES:
+:ID:       B77D1BA1-637E-4CCE-BB84-02A13E686FE9
+:END:
+Use the Anthropic model to tokenize the following sentence:
+"The quick brown fox jumps over the lazy dog."
+*** Answer ***
+#+BEGIN_SRC python
+import anthropic
+model = anthropic.Model()
+sentence = "The quick brown fox jumps over the lazy dog."
+tokens = model.tokenize(sentence)
+print(tokens)
+#+END_SRC
+** Tokenization Example 6: Using Langchain                            :drill:
+:PROPERTIES:
+:ID:       9963C49C-0AE0-4356-ADE2-54B98F96A3EA
+:END:
+Use Langchain to tokenize the following sentence:
+"The quick brown fox jumps over the lazy dog."
+*** Answer ***
+#+BEGIN_SRC python
+import langchain
+model = langchain.Model()
+sentence = "The quick brown fox jumps over the lazy dog."
+tokens = model.tokenize(sentence)
+print(tokens)
+#+END_SRC
+** Tokenization Example 7: Using OpenAI                               :drill:
+:PROPERTIES:
+:ID:       B2268BE3-CDDF-458B-83D8-B3BE0BE437A4
+:END:
+Use OpenAI to tokenize the following sentence:
+"The quick brown fox jumps over the lazy dog."
+*** Answer ***
+#+BEGIN_SRC python
+import openai
+model = openai.Model()
+sentence = "The quick brown fox jumps over the lazy dog."
+tokens = model.tokenize(sentence)
+print(tokens)
+#+END_SRC
+** Tokenization Example 8: Using Hugging Face                         :drill:
+:PROPERTIES:
+:ID:       06FCEEDB-85E3-46D9-BF86-92DD35DA3EBF
+:END:
+Use Hugging Face to tokenize the following sentence:
+"The quick brown fox jumps over the lazy dog."
+*** Answer ***
+#+BEGIN_SRC python
+import transformers
+model = transformers.AutoModelForTokenClassification.from_pretrained('bert-base-uncased')
+tokenizer = transformers.AutoTokenizer.from_pretrained('bert-base-uncased')
+sentence = "The quick brown fox jumps over the lazy dog."
+inputs = tokenizer(sentence, return_tensors='pt')
+outputs = model(**inputs)
+print(outputs)
+#+END_SRC
+** Tokenization Example 9: Tokenizing a Text File                     :drill:
+:PROPERTIES:
+:ID:       A4ED710D-A665-4478-A2F3-2C908CF301EE
+:END:
+Tokenize the text in the following file: example.txt
+*** Answer ***
+#+BEGIN_SRC python
+import nltk
+nltk.download('punkt')
+with open('example.txt', 'r') as f:
+text = f.read()
+tokens = nltk.word_tokenize(text)
+print(tokens)
+#+END_SRC
+** Tokenization Example 10: Tokenizing a Web Page                     :drill:
+:PROPERTIES:
+:ID:       5809923A-21AC-4663-9C9D-A059A6107CF7
+:END:
+Tokenize the text on the following web page: https://www.example.com
+*** Answer ***
+#+BEGIN_SRC python
+import nltk
+nltk.download('punkt')
+import requests
+from bs4 import BeautifulSoup
+url = ''
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+text = soup.get_text()
+tokens = nltk.word_tokenize(text)
+print(tokens)
+#+END_SRC

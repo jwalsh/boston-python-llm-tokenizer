@@ -1,0 +1,176 @@
+* Boston Python LLM Tokenizer
+  :PROPERTIES:
+  :CUSTOM_ID: boston-python-llm-tokenizer
+  :END:
+** Introduction
+   :PROPERTIES:
+   :CUSTOM_ID: introduction
+   :END:
+Welcome to the Boston Python LLM Tokenizer project! This project is
+designed to help you learn about tokenization in the context of Large
+Language Models (LLMs) and implement your own tokenizer. Tokenization is
+a crucial step in natural language processing, particularly for LLMs, as
+it breaks down text into smaller units (tokens) that can be processed by
+the model.
+
+[[./images/thumbnails/Gemini_Generated_Image_fjjmu7fjjmu7fjjm-thumb.png]]
+
+** Project Overview
+   :PROPERTIES:
+   :CUSTOM_ID: project-overview
+   :END:
+The Boston Python LLM Tokenizer project aims to:
+
+1. Provide a hands-on learning experience for tokenization concepts
+2. Guide you through implementing a basic tokenizer
+3. Offer exercises and drills to reinforce your understanding
+4. Encourage experimentation and extension of the tokenizer
+   functionality
+
+** Getting Started
+   :PROPERTIES:
+   :CUSTOM_ID: getting-started
+   :END:
+To begin working with the project, follow these steps:
+
+1. Clone the repository:
+
+   #+begin_src shell
+     git clone https://github.com/your-username/boston-python-llm-tokenizer.git
+     cd boston-python-llm-tokenizer
+   #+end_src
+
+2. Set up the environment:
+
+   #+begin_src shell
+     make setup
+   #+end_src
+
+   This command will create a virtual environment, install the required
+   dependencies, and set up the project structure.
+
+3. Activate the virtual environment:
+
+   #+begin_src shell
+     source venv/bin/activate  # On Unix-based systems
+   #+end_src
+
+** Project Structure
+   :PROPERTIES:
+   :CUSTOM_ID: project-structure
+   :END:
+The project is organized as follows:
+
+#+begin_example
+  boston-python-llm-tokenizer/
+  ├── src/
+  │   └── boston_python_llm_tokenizer/
+  │       ├── __init__.py
+  │       ├── tokenizer.py
+  │       └── utils.py
+  ├── tests/
+  │   └── test_tokenizer.py
+  ├── drills/
+  │   └── tokenization_drill.org
+  ├── Makefile
+  ├── requirements.txt
+  └── README.md
+#+end_example
+
+** Running the Drills
+   :PROPERTIES:
+   :CUSTOM_ID: running-the-drills
+   :END:
+To practice tokenization exercises, use the following command:
+
+#+begin_src shell
+  make drill
+#+end_src
+
+This will open the tokenization drill in Emacs, where you can work
+through various exercises to improve your understanding of tokenization
+concepts.
+
+** Running the Tests
+   :PROPERTIES:
+   :CUSTOM_ID: running-the-tests
+   :END:
+To execute the test suite, run:
+
+#+begin_src shell
+  make test
+#+end_src
+
+This command will run the tests using pytest and report any failures.
+The tests are designed to guide your implementation and ensure your
+tokenizer functions correctly.
+
+** Extending the Tokenizer
+   :PROPERTIES:
+   :CUSTOM_ID: extending-the-tokenizer
+   :END:
+After completing the drills, you can start extending the tokenizer by
+implementing new features and functionality. The
+=src/boston_python_llm_tokenizer/tokenizer.py= file contains a basic
+tokenizer implementation that you can build upon.
+
+Some ideas for extension include: - Implementing different tokenization
+algorithms (e.g., BPE, WordPiece, SentencePiece) - Adding support for
+multiple languages - Optimizing tokenization speed - Implementing token
+merging and splitting techniques
+
+** Failing Tests
+   :PROPERTIES:
+   :CUSTOM_ID: failing-tests
+   :END:
+The =tests/= directory contains a set of failing tests that you can use
+to guide your implementation. These tests describe the expected behavior
+of your tokenizer. As you implement new features, aim to make these
+tests pass.
+
+** Resources
+   :PROPERTIES:
+   :CUSTOM_ID: resources
+   :END:
+To deepen your understanding of LLM tokenization, consider exploring
+these resources:
+
+- [[https://www.promptingguide.ai/research/llm-tokenization][Prompting
+  Guide: LLM Tokenization]]
+- [[https://cloud.google.com/vertex-ai/generative-ai/docs/compute-token][Google
+  Cloud: Compute Tokens for LLMs]]
+- [[https://huggingface.co/docs/transformers/en/model_doc/llama][Hugging
+  Face: LLaMA Tokenizer]]
+
+** Contributing
+   :PROPERTIES:
+   :CUSTOM_ID: contributing
+   :END:
+We welcome contributions to the Boston Python LLM Tokenizer project! If
+you'd like to contribute:
+
+1. Fork the repository
+2. Create a new branch for your feature or bug fix
+3. Make your changes and commit them with clear, descriptive messages
+4. Push your changes to your fork
+5. Submit a pull request with a description of your changes
+
+Please ensure your code adheres to the project's coding standards and
+includes appropriate tests.
+
+** License
+   :PROPERTIES:
+   :CUSTOM_ID: license
+   :END:
+The Boston Python LLM Tokenizer project is licensed under the MIT
+License. See the =LICENSE= file for more details.
+
+** Acknowledgments
+   :PROPERTIES:
+   :CUSTOM_ID: acknowledgments
+   :END:
+This project was inspired by the Boston Python community and the growing
+interest in LLMs and natural language processing. Special thanks to all
+contributors and maintainers who help make this project a valuable
+learning resource.
+
