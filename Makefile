@@ -1,11 +1,9 @@
 # Boston Python LLM Tokenizer Makefile
 
 # ====== Variables ======
-PYTHON := python3
-PIP := pip3
-VENV := .venv
-BIN := $(VENV)/bin
-ACTIVATE := . $(BIN)/activate
+POETRY := poetry
+PYTHON := $(POETRY) run python
+PIP := $(POETRY) run pip
 EMACS := emacs
 EMACSFLAGS := -Q -l $(PWD)/emacs-config/init.el
 EMACSBATCH := $(EMACS) -Q --batch
@@ -19,13 +17,12 @@ THUMBS_DIR := $(IMAGES_DIR)/thumbnails
 EMACS_DIR := emacs-config
 
 # ====== Marker Files ======
-VENV_MARKER := $(VENV)/.venv_created
 SETUP_MARKER := .setup_complete
 
 # ====== Main Targets ======
 .DEFAULT_GOAL := help
 
-.PHONY: help setup venv emacs-setup drill emacs test format typecheck freeze thumbnails clean install-deps update-emacs-packages
+.PHONY: help setup emacs-setup drill emacs test format typecheck freeze thumbnails clean install-deps update-emacs-packages
 
 help: ## Display this help message
 	@echo "Usage: make [target]"
@@ -35,22 +32,13 @@ help: ## Display this help message
 
 setup: $(SETUP_MARKER) ## Set up the entire project environment (start here)
 
-$(SETUP_MARKER): $(VENV_MARKER)
+$(SETUP_MARKER): pyproject.toml
 	@echo "Setting up Boston Python LLM Tokenizer environment..."
 	@mkdir -p $(DRILLS_DIR) $(SRC_DIR) $(IMAGES_DIR) $(THUMBS_DIR)
 	@touch $(SRC_DIR)/boston_python_llm_tokenizer/__init__.py
-	@$(ACTIVATE) && pip install -e .
+	@$(POETRY) install
 	@touch $@
 	@echo "Setup complete!"
-	@echo "To activate the virtual environment, run: source $(VENV)/bin/activate"
-
-$(VENV_MARKER):
-	@echo "Creating virtual environment..."
-	@$(PYTHON) -m venv $(VENV)
-	@$(ACTIVATE) && $(PIP) install --upgrade pip
-	@$(ACTIVATE) && $(PIP) install -r requirements.txt
-	@touch $@
-	@echo "Virtual environment created and packages installed."
 
 emacs-setup: $(SETUP_MARKER) ## Set up Emacs configuration
 	@echo "Setting up Emacs configuration..."
@@ -74,22 +62,22 @@ emacs-setup: $(SETUP_MARKER) ## Set up Emacs configuration
 
 # ====== Development Targets ======
 drill: $(SETUP_MARKER) ## Open the tokenization drill in Emacs
-	@$(ACTIVATE) && $(EMACS) $(EMACSFLAGS) --eval '(progn (find-file "$(DRILLS_DIR)/tokenization-drill.org") (org-drill))'
+	@$(POETRY) run $(EMACS) $(EMACSFLAGS) --eval '(progn (find-file "$(DRILLS_DIR)/tokenization-drill.org") (org-drill))'
 
 emacs: $(SETUP_MARKER) ## Open Emacs with the custom configuration
-	@$(ACTIVATE) && $(EMACS) $(EMACSFLAGS) $(PWD)
+	@$(POETRY) run $(EMACS) $(EMACSFLAGS) $(PWD)
 
 test: $(SETUP_MARKER) ## Run tests for Python code
-	@$(ACTIVATE) && PYTHONPATH=src pytest $(TESTS_DIR)
+	@$(POETRY) run pytest $(TESTS_DIR)
 
 format: $(SETUP_MARKER) ## Format Python code using Black
-	@$(ACTIVATE) && black $(SRC_DIR) $(TESTS_DIR)
+	@$(POETRY) run black $(SRC_DIR) $(TESTS_DIR)
 
 typecheck: $(SETUP_MARKER) ## Run type checking on Python code using mypy
-	@$(ACTIVATE) && mypy $(SRC_DIR)
+	@$(POETRY) run mypy $(SRC_DIR)
 
-freeze: $(SETUP_MARKER) ## Freeze dependencies in requirements.txt
-	@$(ACTIVATE) && $(PIP) freeze > requirements.txt
+freeze: $(SETUP_MARKER) ## Export dependencies to requirements.txt
+	@$(POETRY) export -f requirements.txt --output requirements.txt
 
 # ====== Utility Targets ======
 thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images directory
@@ -98,7 +86,7 @@ thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images d
 	@for img in $(IMAGES_DIR)/*.{jpg,jpeg}; do \
 		if [ -f "$$img" ]; then \
 			base=$$(basename "$$img" | sed 's/\.[^.]*$$//'); \
-			convert -geometry 480x480 "$$img" "$(THUMBS_DIR)/$$base-thumb.png"; \
+			$(POETRY) run convert -geometry 480x480 "$$img" "$(THUMBS_DIR)/$$base-thumb.png"; \
 			echo "Created thumbnail for $$img"; \
 		fi; \
 	done
@@ -106,15 +94,16 @@ thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images d
 
 clean: ## Clean up the environment
 	@echo "Cleaning up..."
-	@rm -rf $(VENV) $(THUMBS_DIR) $(SETUP_MARKER)
+	@$(POETRY) env remove --all
+	@rm -rf $(THUMBS_DIR) $(SETUP_MARKER)
 	@find . -type f -name "*.pyc" -delete
 	@find . -type d -name "__pycache__" -delete
 	@echo "Cleanup complete!"
 
 install-deps: $(SETUP_MARKER) ## Install project dependencies
 	@echo "Installing project dependencies..."
-	@$(ACTIVATE) && $(PIP) install nltk transformers torch torchvision torchaudio
-	@echo "Dependencies installed. Please run 'make freeze' to update requirements.txt"
+	@$(POETRY) install
+	@echo "Dependencies installed."
 
 update-emacs-packages: $(SETUP_MARKER) ## Update Emacs packages
 	@echo "Updating Emacs packages..."

@@ -1,18 +1,17 @@
 ;; init.el
-
 ;; Basic Emacs configuration
 (setq inhibit-startup-message t)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
 (menu-bar-mode -1)
-
 (setq-default word-wrap t)
 (setq-default truncate-lines nil)
 (setq sentence-end-double-space nil)
 (setq-default fill-column 80)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'org-mode-hook 'turn-on-auto-fill)
-
 ;; Replace straight quotes with curly quotes
 (setq-default electric-quote-mode t)
 
@@ -26,7 +25,6 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-
 ;; Ensure all packages are installed
 (setq use-package-always-ensure t)
 
@@ -39,15 +37,12 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t))))
-
-
 (with-eval-after-load 'org
   (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
 
 ;; Language modes
 (use-package python-mode)
 
-;; Install ein if not already installed
 ;; ein configuration
 (use-package ein
   :ensure t
@@ -83,10 +78,8 @@
 (use-package doom-themes
   :config
   (load-theme 'doom-one t))
-
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
-
 (show-paren-mode 1)
 (global-hl-line-mode 1)
 
@@ -94,17 +87,13 @@
 (use-package ivy
   :config
   (ivy-mode 1))
-
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file)))
-
 (use-package swiper
   :bind ("C-s" . swiper))
-
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
-
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C->" . mc/mark-next-like-this)
@@ -114,10 +103,8 @@
 (use-package lsp-mode
   :hook ((python-mode . lsp))
   :commands lsp)
-
 (use-package lsp-ui
   :commands lsp-ui-mode)
-
 (use-package treemacs
   :bind ("C-c t" . treemacs))
 
@@ -129,7 +116,6 @@
 (use-package git-gutter
   :config
   (global-git-gutter-mode +1))
-
 (use-package git-timemachine)
 
 ;; Org-drill configuration
@@ -141,7 +127,6 @@
   (setq org-drill-left-cloze-separator "[")
   (setq org-drill-right-cloze-separator "]")
   (setq org-drill-learn-fraction 0.25))
-
 ;; Add keybinding for org-drill
 (global-set-key (kbd "C-c d") 'org-drill)
 
@@ -156,5 +141,4 @@
   (interactive)
   (find-file "drills/tokenizer-drill.org")
   (org-drill))
-
 (global-set-key (kbd "C-c t") 'tokenizer-drill)

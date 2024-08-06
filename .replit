@@ -1,0 +1,10 @@
+modules = ["python-3.12"]
+compile = "make"
+run = "make test"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+build = ["sh", "-c", "make"]
+run = ["sh", "-c", "make test"]
