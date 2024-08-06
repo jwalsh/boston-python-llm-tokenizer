@@ -1,7 +1,7 @@
 # Boston Python LLM Tokenizer Makefile
 
 # ====== Variables ======
-PYTHON := python3.11
+PYTHON := python3.12
 PIP := $(PYTHON) -m pip
 POETRY := $(PYTHON) -m poetry
 EMACS := emacs

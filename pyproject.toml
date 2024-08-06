@@ -7,7 +7,7 @@ readme = "README.org"
 packages = [{include = "boston_python_llm_tokenizer", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 pytest = "^7.3"
 black = "^23.3"
 mypy = "^1.3"
