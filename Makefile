@@ -7,6 +7,7 @@ POETRY := $(PYTHON) -m poetry
 EMACS := emacs
 EMACSFLAGS := -Q -l $(PWD)/.emacs.d/init.el
 EMACSBATCH := $(EMACS) -Q --batch
+CONTAINER := my-emacs-image 
 
 # ====== Directories ======
 DRILLS_DIR := drills
@@ -128,3 +129,9 @@ $(CODESPACE_MARKER):
 	@$(POETRY) install
 	@touch $@
 	@echo "GitHub Codespace setup complete!"
+
+docker-build: ## (Optional) Prepare the drills in Docker
+	@docker build -t $(CONTAINER) .
+
+docker-run: ## docker-build ## (Optional) Run drills in Docker
+	@docker run -it $(CONTAINER)
