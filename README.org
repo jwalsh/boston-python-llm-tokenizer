@@ -36,7 +36,7 @@ To begin working with the project, follow these steps:
 1. Clone the repository:
 
    #+begin_src shell
-     git clone https://github.com/your-username/boston-python-llm-tokenizer.git
+     git clone https://github.com/{your-username}/boston-python-llm-tokenizer.git
      cd boston-python-llm-tokenizer
    #+end_src
 
