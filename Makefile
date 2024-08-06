@@ -93,7 +93,7 @@ thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images d
 
 clean: ## Clean up the environment
 	@echo "Cleaning up..."
-	@rm -rf $(THUMBS_DIR) $(SETUP_MARKER) $(CODESPACE_MARKER)
+	@rm -rf $(SETUP_MARKER) $(CODESPACE_MARKER)
 	@find . -type f -name "*.pyc" -delete
 	@find . -type d -name "__pycache__" -delete
 	@echo "Cleanup complete!"
