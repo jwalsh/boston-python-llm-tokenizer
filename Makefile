@@ -18,11 +18,12 @@ EMACS_DIR := emacs-config
 
 # ====== Marker Files ======
 SETUP_MARKER := .setup_complete
+CODESPACE_MARKER := .codespace_setup_complete
 
 # ====== Main Targets ======
 .DEFAULT_GOAL := help
 
-.PHONY: help setup emacs-setup drill emacs test format typecheck freeze thumbnails clean install-deps update-emacs-packages
+.PHONY: help setup emacs-setup drill emacs test format typecheck freeze thumbnails clean install-deps update-emacs-packages setup-github-codespace
 
 help: ## Display this help message
 	@echo "Usage: make [target]"
@@ -34,7 +35,7 @@ setup: $(SETUP_MARKER) ## Set up the entire project environment (start here)
 
 $(SETUP_MARKER): pyproject.toml
 	@echo "Setting up Boston Python LLM Tokenizer environment..."
-	@mkdir -p $(DRILLS_DIR) $(SRC_DIR) $(IMAGES_DIR) $(THUMBS_DIR)
+	@mkdir -p $(DRILLS_DIR) $(SRC_DIR)/boston_python_llm_tokenizer $(IMAGES_DIR) $(THUMBS_DIR)
 	@touch $(SRC_DIR)/boston_python_llm_tokenizer/__init__.py
 	@$(POETRY) install
 	@touch $@
@@ -60,7 +61,6 @@ emacs-setup: $(SETUP_MARKER) ## Set up Emacs configuration
 		2>&1 | tee emacs_setup.log
 	@echo "Emacs configuration complete! Check emacs_setup.log for details."
 
-# ====== Development Targets ======
 drill: $(SETUP_MARKER) ## Open the tokenization drill in Emacs
 	@$(POETRY) run $(EMACS) $(EMACSFLAGS) --eval '(progn (find-file "$(DRILLS_DIR)/tokenization-drill.org") (org-drill))'
 
@@ -79,7 +79,6 @@ typecheck: $(SETUP_MARKER) ## Run type checking on Python code using mypy
 freeze: $(SETUP_MARKER) ## Export dependencies to requirements.txt
 	@$(POETRY) export -f requirements.txt --output requirements.txt
 
-# ====== Utility Targets ======
 thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images directory
 	@echo "Creating thumbnails..."
 	@mkdir -p $(THUMBS_DIR)
@@ -95,7 +94,7 @@ thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images d
 clean: ## Clean up the environment
 	@echo "Cleaning up..."
 	@$(POETRY) env remove --all
-	@rm -rf $(THUMBS_DIR) $(SETUP_MARKER)
+	@rm -rf $(THUMBS_DIR) $(SETUP_MARKER) $(CODESPACE_MARKER)
 	@find . -type f -name "*.pyc" -delete
 	@find . -type d -name "__pycache__" -delete
 	@echo "Cleanup complete!"
@@ -116,3 +115,17 @@ update-emacs-packages: $(SETUP_MARKER) ## Update Emacs packages
 					(package-install package))))" \
 		2>&1 | tee emacs_update.log
 	@echo "Emacs packages updated. Check emacs_update.log for details."
+
+setup-github-codespace: $(CODESPACE_MARKER) ## (Optional) Set up GitHub Codespace with Poetry
+
+$(CODESPACE_MARKER):
+	@echo "Setting up GitHub Codespace..."
+	@if ! command -v poetry &> /dev/null; then \
+		echo "Installing Poetry..."; \
+		curl -sSL https://install.python-poetry.org | python3 -; \
+	fi
+	@poetry --version
+	@poetry config virtualenvs.in-project true
+	@poetry install
+	@touch $@
+	@echo "GitHub Codespace setup complete!"

@@ -209,4 +209,4 @@ flycheck_*.el
 .dir-locals.el
 
 # network security
-/network-security.data
+/network-security.data.codespace_setup_complete

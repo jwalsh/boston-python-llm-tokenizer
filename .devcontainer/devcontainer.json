@@ -1,0 +1,13 @@
+{
+    "name": "Boston Python LLM Tokenizer",
+    "image": "mcr.microsoft.com/vscode/devcontainers/python:3",
+    "postCreateCommand": "make setup-github-codespace",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-python.python",
+          "ms-python.vscode-pylance"
+        ]
+      }
+    }
+  }
