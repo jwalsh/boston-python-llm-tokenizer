@@ -1,11 +1,11 @@
 # Boston Python LLM Tokenizer Makefile
 
 # ====== Variables ======
-POETRY := poetry
-PYTHON := $(POETRY) run python
-PIP := $(POETRY) run pip
+PYTHON := python3.11
+PIP := $(PYTHON) -m pip
+POETRY := $(PYTHON) -m poetry
 EMACS := emacs
-EMACSFLAGS := -Q -l $(PWD)/emacs-config/init.el
+EMACSFLAGS := -Q -l $(PWD)/.emacs.d/init.el
 EMACSBATCH := $(EMACS) -Q --batch
 
 # ====== Directories ======
@@ -14,7 +14,7 @@ SRC_DIR := src
 TESTS_DIR := tests
 IMAGES_DIR := images
 THUMBS_DIR := $(IMAGES_DIR)/thumbnails
-EMACS_DIR := emacs-config
+EMACS_DIR := .emacs.d
 
 # ====== Marker Files ======
 SETUP_MARKER := .setup_complete
@@ -37,19 +37,19 @@ $(SETUP_MARKER): pyproject.toml
 	@echo "Setting up Boston Python LLM Tokenizer environment..."
 	@mkdir -p $(DRILLS_DIR) $(SRC_DIR)/boston_python_llm_tokenizer $(IMAGES_DIR) $(THUMBS_DIR)
 	@touch $(SRC_DIR)/boston_python_llm_tokenizer/__init__.py
+	@echo "Checking Python version..."
+	@$(PYTHON) --version
+	@echo "Installing packaging and poetry..."
+	@$(PIP) install --user --upgrade pip setuptools wheel
+	@$(PIP) install --user packaging poetry
+	@echo "Verifying Poetry installation..."
+	@$(POETRY) --version
+	@echo "Installing project dependencies..."
 	@$(POETRY) install
 	@touch $@
 	@echo "Setup complete!"
 
 emacs-setup: $(SETUP_MARKER) ## Set up Emacs configuration
-	@echo "Setting up Emacs configuration..."
-	@mkdir -p $(EMACS_DIR)
-	@if [ ! -f $(EMACS_DIR)/init.el ] || ! cmp -s emacs-config/init.el $(EMACS_DIR)/init.el; then \
-		cp emacs-config/init.el $(EMACS_DIR)/init.el && \
-		echo "Copied init.el to $(EMACS_DIR)"; \
-	else \
-		echo "init.el is already up to date in $(EMACS_DIR)"; \
-	fi
 	@echo "Installing Emacs packages..."
 	@$(EMACSBATCH) -l $(EMACS_DIR)/init.el \
 		--eval "(progn \
@@ -93,7 +93,6 @@ thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images d
 
 clean: ## Clean up the environment
 	@echo "Cleaning up..."
-	@$(POETRY) env remove --all
 	@rm -rf $(THUMBS_DIR) $(SETUP_MARKER) $(CODESPACE_MARKER)
 	@find . -type f -name "*.pyc" -delete
 	@find . -type d -name "__pycache__" -delete
@@ -122,10 +121,10 @@ $(CODESPACE_MARKER):
 	@echo "Setting up GitHub Codespace..."
 	@if ! command -v poetry &> /dev/null; then \
 		echo "Installing Poetry..."; \
-		curl -sSL https://install.python-poetry.org | python3 -; \
+		curl -sSL https://install.python-poetry.org | $(PYTHON) -; \
 	fi
-	@poetry --version
-	@poetry config virtualenvs.in-project true
-	@poetry install
+	@$(POETRY) --version
+	@$(POETRY) config virtualenvs.in-project true
+	@$(POETRY) install
 	@touch $@
 	@echo "GitHub Codespace setup complete!"
