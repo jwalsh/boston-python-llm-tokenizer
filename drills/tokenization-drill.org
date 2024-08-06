@@ -1,18 +1,6 @@
 * Tokenization Drills
 
 ** What is Tokenization?                                              :drill:
-SCHEDULED: <2024-08-10 Sat>
-:PROPERTIES:
-:ID:       8EFEA813-F9A5-4FA7-9C7E-4CF24793646B
-:DRILL_LAST_INTERVAL: 3.6977
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
 
 Tokenization is [ the process of breaking down text into individual words or
 tokens. ]
@@ -26,18 +14,7 @@ This is a fundamental step in natural language processing (NLP) and is used in a
 - Machine translation 
 
 ** Tokenization Example 1: Simple Sentence                            :drill:
-SCHEDULED: <2024-08-09 Fri>
-:PROPERTIES:
-:ID:       2CABE481-2383-4E3E-A246-208458E3DABC
-:DRILL_LAST_INTERVAL: 3.3515
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
+
 Tokenize the following sentence:
 
 #+begin_example
@@ -55,18 +32,6 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 2: Sentence with Punctuation                  :drill:
-SCHEDULED: <2024-08-10 Sat>
-:PROPERTIES:
-:ID:       BA0014B1-C096-4559-A789-B2DB971C8FE7
-:DRILL_LAST_INTERVAL: 4.1421
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
 
 Tokenize the following sentence:
 
@@ -86,18 +51,6 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 3: Paragraph                                  :drill:
-SCHEDULED: <2024-08-10 Sat>
-:PROPERTIES:
-:ID:       BA64D2DE-516E-4D7D-826D-596970EA8190
-:DRILL_LAST_INTERVAL: 4.1055
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
 
 Tokenize the following paragraph:
 
@@ -116,18 +69,7 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 4: Using Hugging Face Tokenizer               :drill:
-SCHEDULED: <2024-08-09 Fri>
-:PROPERTIES:
-:ID:       06FCEEDB-85E3-46D9-BF86-92DD35DA3EBF
-:DRILL_LAST_INTERVAL: 3.479
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
+
 Use Hugging Face to tokenize the following sentence:
 
 #+begin_example
@@ -145,18 +87,6 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 5: Tokenizing a Text File                     :drill:
-SCHEDULED: <2024-08-11 Sun>
-:PROPERTIES:
-:ID:       A4ED710D-A665-4478-A2F3-2C908CF301EE
-:DRILL_LAST_INTERVAL: 4.7148
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
 
 Tokenize the text in the following file: ~example.txt~
 
@@ -172,18 +102,6 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 6: Tokenizing with Regular Expressions        :drill:
-SCHEDULED: <2024-08-10 Sat>
-:PROPERTIES:
-:ID:       5809923A-21AC-4663-9C9D-A059A6107CF7
-:DRILL_LAST_INTERVAL: 3.7652
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
 
 Use regular expressions to tokenize the following text:
 
@@ -201,18 +119,6 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 7: Subword Tokenization                       :drill:
-SCHEDULED: <2024-08-11 Sun>
-:PROPERTIES:
-:ID:       B77D1BA1-637E-4CCE-BB84-02A13E686FE9
-:DRILL_LAST_INTERVAL: 4.8305
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
 
 Use a subword tokenization method (like BPE) to tokenize the following word:
 
@@ -231,18 +137,7 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 8: Multilingual Tokenization                  :drill:
-SCHEDULED: <2024-08-09 Fri>
-:PROPERTIES:
-:ID:       9963C49C-0AE0-4356-ADE2-54B98F96A3EA
-:DRILL_LAST_INTERVAL: 2.9693
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
+
 Tokenize the following multilingual text:
 
 #+begin_example
@@ -260,18 +155,6 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 9: Handling Special Characters                :drill:
-SCHEDULED: <2024-08-10 Sat>
-:PROPERTIES:
-:ID:       B2268BE3-CDDF-458B-83D8-B3BE0BE437A4
-:DRILL_LAST_INTERVAL: 3.5344
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
 
 Tokenize the following text with special characters and emojis:
 
@@ -292,18 +175,6 @@ print(tokens)
 #+END_SRC
 
 ** Tokenization Example 10: Custom Tokenization                       :drill:
-SCHEDULED: <2024-08-10 Sat>
-:PROPERTIES:
-:ID:       0C742424-ED26-42DC-B2EC-976852BB3EE0
-:DRILL_LAST_INTERVAL: 4.2252
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 3.0
-:DRILL_EASE: 2.36
-:DRILL_LAST_QUALITY: 3
-:DRILL_LAST_REVIEWED: [Y-08-06 Tue 17:%]
-:END:
 
 Create a custom tokenizer that splits on spaces but keeps punctuation attached to words:
 
