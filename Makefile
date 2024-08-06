@@ -78,14 +78,17 @@ emacs-setup: ## Set up Emacs configuration
 	done
 	@echo "Emacs configuration complete!"
 
-update-emacs-packages: ## (optional) Update Emacs packages
+update-emacs-packages: ## Update Emacs packages
 	@echo "Updating Emacs packages..."
 	@$(EMACSBATCH) -l $(EMACS_DIR)/init.el \
 		--eval "(progn \
+			(require 'package) \
 			(package-refresh-contents) \
-			(package-update-all) \
-			(package-install-selected-packages))"
-	@echo "Emacs packages updated."
+			(dolist (package package-selected-packages) \
+				(when (package-installed-p package) \
+					(package-install package))))" \
+		2>&1 | tee emacs_update.log
+	@echo "Emacs packages updated. Check emacs_update.log for details."
 
 drill: venv emacs-setup ## Open the tokenization drill in Emacs
 	@$(ACTIVATE) && $(EMACS) $(EMACSFLAGS) --eval '(progn (find-file "$(DRILLS_DIR)/tokenization-drill.org") (org-drill))'
