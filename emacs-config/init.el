@@ -43,12 +43,12 @@
 ;; Language modes
 (use-package python-mode)
 
-;; ein configuration
-(use-package ein
-  :ensure t
-  :config
-  (require 'ein)
-  (require 'ein-notebook))
+;; ;; ein configuration
+;; (use-package ein
+;;   :ensure t
+;;   :config
+;;   (require 'ein)
+;;   (require 'ein-notebook))
 
 ;; Company for auto-completion
 (use-package company
