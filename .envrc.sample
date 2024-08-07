@@ -1,0 +1,35 @@
+# .envrc.sample
+# Copy this file to .envrc and fill in your actual API keys
+
+# GitHub and Version Control
+# Get your GitHub token from: https://github.com/settings/tokens
+export GITHUB_TOKEN=your_github_token_here
+export GITHUB_API_KEY=$GITHUB_TOKEN
+
+# Google AI (Gemini)
+# Get your API key from: https://aistudio.google.com/app/apikey
+export GOOGLE_AI_API_KEY=your_google_ai_api_key_here
+
+# Azure OpenAI
+# Get your API key from: https://portal.azure.com/ (Azure AI services)
+export AZURE_OPENAI_API_KEY=your_azure_openai_api_key_here
+
+# Anthropic (Claude)
+# Get your API key from: https://console.anthropic.com/account/keys
+export ANTHROPIC_API_KEY=your_anthropic_api_key_here
+export ANTHROPIC_MODEL=claude-2
+
+# OpenAI
+# Get your API key from: https://platform.openai.com/account/api-keys
+export OPENAI_API_KEY=your_openai_api_key_here
+
+# Hugging Face
+# Get your API key from: https://huggingface.co/settings/tokens
+export HUGGINGFACE_API_KEY=your_huggingface_api_key_here
+
+# Langchain
+# Get your API key from: https://www.langchain.com/
+export LANGCHAIN_TRACING_V2=true
+export LANGCHAIN_ENDPOINT="https://api.smith.langchain.com"
+export LANGCHAIN_API_KEY=your_langchain_api_key_here
+export LANGCHAIN_PROJECT="your_project_name_here"
