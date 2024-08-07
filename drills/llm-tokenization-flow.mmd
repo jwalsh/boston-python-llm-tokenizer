@@ -1,0 +1,35 @@
+graph TD
+    A[Raw Text Corpus] --> B[Tokenizer Training]
+    B --> C[Tokenizer Model]
+    C --> D[Vocabulary]
+    
+    E[Input Text] --> F[Tokenization]
+    C --> F
+    F --> G[Tokens]
+    G --> H[Encoding]
+    D --> H
+    H --> I[Encoded Tokens]
+    
+    subgraph "Training Process"
+    A
+    B
+    C
+    D
+    end
+    
+    subgraph "Tokenization Process"
+    E
+    F
+    G
+    H
+    I
+    end
+    
+    J[Decoder] --> K[Decoded Text]
+    I --> J
+    D --> J
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#f9f,stroke:#333,stroke-width:2px
+    style I fill:#bbf,stroke:#333,stroke-width:2px
+    style K fill:#bfb,stroke:#333,stroke-width:2px

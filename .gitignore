@@ -211,3 +211,4 @@ flycheck_*.el
 # network security
 /network-security.data.codespace_setup_complete
 .codespace_setup_complete
+.envrc

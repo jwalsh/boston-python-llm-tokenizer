@@ -128,6 +128,39 @@ to guide your implementation. These tests describe the expected behavior
 of your tokenizer. As you implement new features, aim to make these
 tests pass.
 
+** Additional Features
+   :PROPERTIES:
+   :CUSTOM_ID: additional-features
+   :END:
+
+*** Docker Support
+    You can run the project in a Docker container. Build and run the container using:
+    #+begin_src shell
+      make docker-build
+      make docker-run
+    #+end_src
+
+*** Mermaid Diagrams
+    The project supports generating PNG files from Mermaid diagrams. Place your .mmd files in the project directory and run:
+    #+begin_src shell
+      make diagrams
+    #+end_src
+
+*** Emacs Integration
+    The project includes Emacs configuration for running drills. Use the following command to open Emacs with the custom configuration:
+    #+begin_src shell
+      make emacs
+    #+end_src
+
+*** GitHub Codespace
+    To set up the project in a GitHub Codespace, use:
+    #+begin_src shell
+      make setup-github-codespace
+    #+end_src
+
+** Makefile Targets
+   The project includes various Makefile targets for common tasks. Run `make help` to see all available targets and their descriptions.
+
 ** Resources
    :PROPERTIES:
    :CUSTOM_ID: resources

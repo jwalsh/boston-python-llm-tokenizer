@@ -1,9 +1,10 @@
 * Tokenization Drills
 
 ** What is Tokenization?                                              :drill:
+:PROPERTIES:
+:END:
 
-Tokenization is [ the process of breaking down text into individual words or
-tokens. ]
+Tokenization is [ the process of breaking down text into individual words or tokens. ]
 
 *** Answer
 
@@ -11,189 +12,213 @@ This is a fundamental step in natural language processing (NLP) and is used in a
 
 - Text analysis
 - Sentiment analysis
-- Machine translation 
+- Machine translation
 
-** Tokenization Example 1: Simple Sentence                            :drill:
+** Toy Example: Fetch Text                                            :drill:
+:PROPERTIES:
+:END:
 
-Tokenize the following sentence:
-
-#+begin_example
-"The quick brown fox jumps over the lazy dog."
-#+end_example
+Fetch text from Project Gutenberg. [ ~requests.get(url)~ ]
 
 *** Answer
 
-#+BEGIN_SRC python
+#+begin_src python
+import requests
+
+def fetch_gutenberg_text(url):
+    return requests.get(url).text
+
+url = "https://www.gutenberg.org/files/1342/1342-0.txt"  # Pride and Prejudice
+text = fetch_gutenberg_text(url)
+print(f"Fetched {len(text)} characters")
+
+with open("sample_text.txt", "w") as f:
+    f.write(text[:1000])  # Save first 1000 characters
+#+end_src
+
+** Toy Example: Simple Tokenization                                   :drill:
+:PROPERTIES:
+:END:
+
+Implement a simple tokenization function. [ ~s.split()~ ] 
+
+*** Answer
+
+#+begin_src python
+def simple_tokenize(text):
+    return text.split()
+
+with open("sample_text.txt", "r") as f:
+    sample_text = f.read()
+
+tokens = simple_tokenize(sample_text)
+print(f"First 10 tokens: {tokens[:10]}")
+print(f"Total tokens: {len(tokens)}")
+
+with open("tokens.txt", "w") as f:
+    f.write("\n".join(tokens))
+#+end_src
+
+** Toy Example: Build Vocabulary                                      :drill:
+:PROPERTIES:
+:END:
+
+Build a vocabulary from the tokenized text.
+
+*** Answer
+
+#+begin_src python
+from collections import Counter
+import json
+
+def build_vocabulary(tokens, max_vocab_size=256):
+    return dict(Counter(tokens).most_common(max_vocab_size))
+
+with open("tokens.txt", "r") as f:
+    tokens = f.read().split()
+
+vocab = build_vocabulary(tokens)
+print(f"Vocabulary size: {len(vocab)}")
+print(f"Top 5 words: {list(vocab.items())[:5]}")
+
+with open("vocabulary.json", "w") as f:
+    json.dump(vocab, f)
+#+end_src
+
+** Toy Example: Encode Text                                           :drill:
+:PROPERTIES:
+:END:
+
+Encode text using the built vocabulary.
+
+*** Answer
+
+#+begin_src python
+import json
+
+def encode_text(text, vocabulary):
+    return [vocabulary.get(token.lower(), 0) for token in text.split()]
+
+with open("vocabulary.json", "r") as f:
+    vocabulary = json.load(f)
+
+with open("sample_text.txt", "r") as f:
+    sample_text = f.read()
+
+encoded = encode_text(sample_text, vocabulary)
+print(f"First 20 encoded tokens: {encoded[:20]}")
+
+with open("encoded_text.json", "w") as f:
+    json.dump(encoded, f)
+#+end_src
+
+** Toy Example: Decode Text                                           :drill:
+:PROPERTIES:
+:END:
+
+Decode the encoded text back to words.
+
+*** Answer
+
+#+begin_src python
+import json
+
+def decode_text(encoded_text, vocabulary):
+    rev_vocab = {v: k for k, v in vocabulary.items()}
+    return [rev_vocab.get(code, "<UNK>") for code in encoded_text]
+
+with open("vocabulary.json", "r") as f:
+    vocabulary = json.load(f)
+
+with open("encoded_text.json", "r") as f:
+    encoded_text = json.load(f)
+
+decoded = decode_text(encoded_text, vocabulary)
+print(f"First 20 decoded tokens: {decoded[:20]}")
+#+end_src
+
+** Production Example: NLTK Tokenization                              :drill:
+:PROPERTIES:
+:END:
+
+Use NLTK to tokenize a sentence.
+
+*** Answer
+
+#+begin_src python
 import nltk
 nltk.download('punkt')
+
 sentence = "The quick brown fox jumps over the lazy dog."
 tokens = nltk.word_tokenize(sentence)
 print(tokens)
-#+END_SRC
+#+end_src
 
-** Tokenization Example 2: Sentence with Punctuation                  :drill:
+** Production Example: Hugging Face Tokenizer                         :drill:
+:PROPERTIES:
+:END:
 
-Tokenize the following sentence:
-
-#+begin_example
-"Hello, world! How are you today?"
-#+end_example
-
+Use a Hugging Face tokenizer to tokenize a sentence.
 
 *** Answer
 
-#+BEGIN_SRC python
-import nltk
-nltk.download('punkt')
-sentence = "Hello, world! How are you today?"
-tokens = nltk.word_tokenize(sentence)
-print(tokens)
-#+END_SRC
-
-** Tokenization Example 3: Paragraph                                  :drill:
-
-Tokenize the following paragraph:
-
-#+begin_example
-"The quick brown fox jumps over the lazy dog. The sun is shining brightly in the clear blue sky."
-#+end_example
-
-*** Answer
-
-#+BEGIN_SRC python
-import nltk
-nltk.download('punkt')
-paragraph = "The quick brown fox jumps over the lazy dog. The sun is shining brightly in the clear blue sky."
-tokens = nltk.word_tokenize(paragraph)
-print(tokens)
-#+END_SRC
-
-** Tokenization Example 4: Using Hugging Face Tokenizer               :drill:
-
-Use Hugging Face to tokenize the following sentence:
-
-#+begin_example
-"The quick brown fox jumps over the lazy dog."
-#+end_example
-
-*** Answer
-
-#+BEGIN_SRC python
+#+begin_src python
 from transformers import AutoTokenizer
+
 tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 sentence = "The quick brown fox jumps over the lazy dog."
 tokens = tokenizer.tokenize(sentence)
 print(tokens)
-#+END_SRC
+#+end_src
 
-** Tokenization Example 5: Tokenizing a Text File                     :drill:
+** Production Example: spaCy Tokenization                             :drill:
+:PROPERTIES:
+:END:
 
-Tokenize the text in the following file: ~example.txt~
+Use spaCy to tokenize a sentence.
 
 *** Answer
 
-#+BEGIN_SRC python
-import nltk
-nltk.download('punkt')
-with open('example.txt', 'r') as f:
-    text = f.read()
-tokens = nltk.word_tokenize(text)
+#+begin_src python
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
+sentence = "The quick brown fox jumps over the lazy dog."
+doc = nlp(sentence)
+tokens = [token.text for token in doc]
 print(tokens)
-#+END_SRC
+#+end_src
 
-** Tokenization Example 6: Tokenizing with Regular Expressions        :drill:
+** Production Example: Subword Tokenization (BPE)                     :drill:
+:PROPERTIES:
+:END:
 
-Use regular expressions to tokenize the following text:
-
-#+begin_example
-"Hello world! This is a test, with some numbers (12, 34, and 56) included."
-#+end_example
+Use GPT-2's tokenizer to demonstrate subword tokenization.
 
 *** Answer
 
-#+BEGIN_SRC python
-import re
-text = "Hello world! This is a test, with some numbers (12, 34, and 56) included."
-tokens = re.findall(r'\b\w+\b|\S', text)
-print(tokens)
-#+END_SRC
+#+begin_src python
+from transformers import GPT2Tokenizer
 
-** Tokenization Example 7: Subword Tokenization                       :drill:
-
-Use a subword tokenization method (like BPE) to tokenize the following word:
-
-#+begin_example
-"unconditionally"
-#+end_example
-
-*** Answer
-
-#+BEGIN_SRC python
-from transformers import AutoTokenizer
-tokenizer = AutoTokenizer.from_pretrained("gpt2")  # GPT-2 uses BPE tokenization
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 word = "unconditionally"
 tokens = tokenizer.tokenize(word)
 print(tokens)
-#+END_SRC
+#+end_src
 
-** Tokenization Example 8: Multilingual Tokenization                  :drill:
+** Production Example: Multilingual Tokenization                      :drill:
+:PROPERTIES:
+:END:
 
-Tokenize the following multilingual text:
-
-#+begin_example
-"Hello world! Bonjour le monde! Hola mundo! こんにちは世界！"
-#+end_example
+Use a multilingual tokenizer to handle text in multiple languages.
 
 *** Answer
 
-#+BEGIN_SRC python
-from transformers import AutoTokenizer
-tokenizer = AutoTokenizer.from_pretrained("xlm-roberta-base")
+#+begin_src python
+from transformers import XLMRobertaTokenizer
+
+tokenizer = XLMRobertaTokenizer.from_pretrained("xlm-roberta-base")
 text = "Hello world! Bonjour le monde! Hola mundo! こんにちは世界！"
 tokens = tokenizer.tokenize(text)
 print(tokens)
-#+END_SRC
-
-** Tokenization Example 9: Handling Special Characters                :drill:
-
-Tokenize the following text with special characters and emojis:
-
-#+begin_example
-"Let's meet @ the café! 😊 #tokenization"
-#+end_example
-
-*** Answer
-
-#+BEGIN_SRC python
-import nltk
-from nltk.tokenize import TweetTokenizer
-nltk.download('punkt')
-text = "Let's meet @ the café! 😊 #tokenization"
-tokenizer = TweetTokenizer()
-tokens = tokenizer.tokenize(text)
-print(tokens)
-#+END_SRC
-
-** Tokenization Example 10: Custom Tokenization                       :drill:
-
-Create a custom tokenizer that splits on spaces but keeps punctuation attached to words:
-
-#+begin_example
-"Hello, world! This is a test."
-#+end_example
-
-*** Answer
-
-#+BEGIN_SRC python
-import re
-
-def custom_tokenize(text):
-    return re.findall(r"\S+", text)
-
-text = "Hello, world! This is a test."
-tokens = custom_tokenize(text)
-print(tokens)
-#+END_SRC
-
-#+RESULTS:
-: None
+#+end_src

@@ -130,8 +130,25 @@ $(CODESPACE_MARKER):
 	@touch $@
 	@echo "GitHub Codespace setup complete!"
 
+force-setup-complete: ## If Python 3.12 issues persist force complete to fix
+	@touch $(SETUP_MARKER)
+
 docker-build: ## (Optional) Prepare the drills in Docker
 	@docker build -t $(CONTAINER) .
 
 docker-run: ## docker-build ## (Optional) Run drills in Docker
 	@docker run -it $(CONTAINER)
+
+# Find all .mmd files in the current directory and its subdirectories
+MMD_FILES := $(shell find . -name "*.mmd")
+
+# Generate a list of target PNG files
+PNG_FILES := $(MMD_FILES:.mmd=.png)
+
+# Diagrams
+diagrams: $(PNG_FILES)
+
+# Rule to convert .mmd to .png
+%.png: %.mmd
+	@echo "Generating $@ from $<"
+	@mmdc -i $< -o $@ -b transparent
