@@ -34,7 +34,10 @@ print(f"Fetched {len(text)} characters")
 
 with open("sample_text.txt", "w") as f:
     f.write(text[:1000])  # Save first 1000 characters
-#+end_src
+ #+end_src
+
+#+RESULTS:
+: None
 
 ** Toy Example: Simple Tokenization                                   :drill:
 :PROPERTIES:
@@ -58,6 +61,9 @@ print(f"Total tokens: {len(tokens)}")
 with open("tokens.txt", "w") as f:
     f.write("\n".join(tokens))
 #+end_src
+
+#+RESULTS:
+: None
 
 ** Toy Example: Build Vocabulary                                      :drill:
 :PROPERTIES:
@@ -84,6 +90,9 @@ print(f"Top 5 words: {list(vocab.items())[:5]}")
 with open("vocabulary.json", "w") as f:
     json.dump(vocab, f)
 #+end_src
+
+#+RESULTS:
+: None
 
 ** Toy Example: Encode Text                                           :drill:
 :PROPERTIES:
@@ -112,6 +121,9 @@ with open("encoded_text.json", "w") as f:
     json.dump(encoded, f)
 #+end_src
 
+#+RESULTS:
+: None
+
 ** Toy Example: Decode Text                                           :drill:
 :PROPERTIES:
 :END:
@@ -137,6 +149,9 @@ decoded = decode_text(encoded_text, vocabulary)
 print(f"First 20 decoded tokens: {decoded[:20]}")
 #+end_src
 
+#+RESULTS:
+: None
+
 ** Production Example: NLTK Tokenization                              :drill:
 :PROPERTIES:
 :END:
@@ -153,6 +168,9 @@ sentence = "The quick brown fox jumps over the lazy dog."
 tokens = nltk.word_tokenize(sentence)
 print(tokens)
 #+end_src
+
+#+RESULTS:
+: None
 
 ** Production Example: Hugging Face Tokenizer                         :drill:
 :PROPERTIES:
@@ -171,6 +189,9 @@ tokens = tokenizer.tokenize(sentence)
 print(tokens)
 #+end_src
 
+#+RESULTS:
+: None
+
 ** Production Example: spaCy Tokenization                             :drill:
 :PROPERTIES:
 :END:
@@ -188,6 +209,8 @@ doc = nlp(sentence)
 tokens = [token.text for token in doc]
 print(tokens)
 #+end_src
+
+#+RESULTS:
 
 ** Production Example: Subword Tokenization (BPE)                     :drill:
 :PROPERTIES:

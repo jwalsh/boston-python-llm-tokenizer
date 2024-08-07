@@ -41,16 +41,25 @@ $(SETUP_MARKER): pyproject.toml
 	@echo "Checking Python version..."
 	@$(PYTHON) --version
 	@echo "Installing packaging and poetry..."
-	@$(PIP) install --user --upgrade pip setuptools wheel
-	@$(PIP) install --user packaging poetry
+	# TODO: Validate environment and move the following to --user 
+	@$(PIP) install --upgrade pip 
+	@$(PIP) install packaging poetry setuptools wheel # poetry-plugin
+	# General-purpose libraries
+	@$(PIP) install click python-magic requests
+	# NLP and tokenization libraries
+	@$(PIP) install moses nltk sentencepiece spacy stanfordnlp tokenizers torch
+	# LLM and ML frameworks
+	@$(PIP) install anthropic google-generativeai ollama openai transformers
 	@echo "Verifying Poetry installation..."
 	@$(POETRY) --version
 	@echo "Installing project dependencies..."
 	@$(POETRY) install
+	# @$(POETRY) self add bundle
 	@touch $@
 	@echo "Setup complete!"
 
-emacs-setup: $(SETUP_MARKER) ## Set up Emacs configuration
+# Set up Emacs configuration
+emacs-setup: $(SETUP_MARKER)
 	@echo "Installing Emacs packages..."
 	@$(EMACSBATCH) -l $(EMACS_DIR)/init.el \
 		--eval "(progn \
@@ -65,7 +74,8 @@ emacs-setup: $(SETUP_MARKER) ## Set up Emacs configuration
 drill: $(SETUP_MARKER) ## Open the tokenization drill in Emacs
 	@$(POETRY) run $(EMACS) $(EMACSFLAGS) --eval '(progn (find-file "$(DRILLS_DIR)/tokenization-drill.org") (org-drill))'
 
-emacs: $(SETUP_MARKER) ## Open Emacs with the custom configuration
+# Open Emacs with the custom configuration
+emacs: $(SETUP_MARKER) 
 	@$(POETRY) run $(EMACS) $(EMACSFLAGS) $(PWD)
 
 test: $(SETUP_MARKER) ## Run tests for Python code
@@ -77,10 +87,12 @@ format: $(SETUP_MARKER) ## Format Python code using Black
 typecheck: $(SETUP_MARKER) ## Run type checking on Python code using mypy
 	@$(POETRY) run mypy $(SRC_DIR)
 
-freeze: $(SETUP_MARKER) ## Export dependencies to requirements.txt
+# Export dependencies to requirements.txt
+freeze: $(SETUP_MARKER) 
 	@$(POETRY) export -f requirements.txt --output requirements.txt
 
-thumbnails: $(SETUP_MARKER) ## Create thumbnails for JPEG images in the images directory
+# Create thumbnails for JPEG images in the images directory
+thumbnails: $(SETUP_MARKER) 
 	@echo "Creating thumbnails..."
 	@mkdir -p $(THUMBS_DIR)
 	@for img in $(IMAGES_DIR)/*.{jpg,jpeg}; do \
@@ -104,7 +116,8 @@ install-deps: $(SETUP_MARKER) ## Install project dependencies
 	@$(POETRY) install
 	@echo "Dependencies installed."
 
-update-emacs-packages: $(SETUP_MARKER) ## Update Emacs packages
+## Update Emacs packages
+update-emacs-packages: $(SETUP_MARKER) 
 	@echo "Updating Emacs packages..."
 	@$(EMACSBATCH) -l $(EMACS_DIR)/init.el \
 		--eval "(progn \
@@ -116,7 +129,8 @@ update-emacs-packages: $(SETUP_MARKER) ## Update Emacs packages
 		2>&1 | tee emacs_update.log
 	@echo "Emacs packages updated. Check emacs_update.log for details."
 
-setup-github-codespace: $(CODESPACE_MARKER) ## (Optional) Set up GitHub Codespace with Poetry
+# (Optional) Set up GitHub Codespace with Poetry
+setup-github-codespace: $(CODESPACE_MARKER) 
 
 $(CODESPACE_MARKER):
 	@echo "Setting up GitHub Codespace..."
@@ -130,13 +144,16 @@ $(CODESPACE_MARKER):
 	@touch $@
 	@echo "GitHub Codespace setup complete!"
 
-force-setup-complete: ## If Python 3.12 issues persist force complete to fix
+# If Python 3.12 issues persist force complete to fix
+force-setup-complete: 
 	@touch $(SETUP_MARKER)
 
-docker-build: ## (Optional) Prepare the drills in Docker
+# (Optional) Prepare the drills in Docker
+docker-build: 
 	@docker build -t $(CONTAINER) .
 
-docker-run: ## docker-build ## (Optional) Run drills in Docker
+# docker-build ## (Optional) Run drills in Docker
+docker-run: 
 	@docker run -it $(CONTAINER)
 
 # Find all .mmd files in the current directory and its subdirectories
@@ -145,8 +162,8 @@ MMD_FILES := $(shell find . -name "*.mmd")
 # Generate a list of target PNG files
 PNG_FILES := $(MMD_FILES:.mmd=.png)
 
-# Diagrams
-diagrams: $(PNG_FILES)
+
+diagrams: $(PNG_FILES) ## Convert all Mermaid diagrams to PNG 
 
 # Rule to convert .mmd to .png
 %.png: %.mmd
